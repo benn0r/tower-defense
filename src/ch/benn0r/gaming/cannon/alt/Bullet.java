@@ -1,4 +1,4 @@
-package ch.benn0r.gaming.cannon;
+package ch.benn0r.gaming.cannon.alt;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

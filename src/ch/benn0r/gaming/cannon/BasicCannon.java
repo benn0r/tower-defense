@@ -9,27 +9,17 @@ import org.newdawn.slick.geom.Circle;
  * 
  * @author benjamin@benn0r.ch
  */
-abstract public class BasicCannon implements Drawable {
-	
-	/**
-	 * X-Koordinate
-	 */
-	protected int x;
-	
-	/**
-	 * Y-Koordinate
-	 */
-	protected int y;
+abstract public class BasicCannon extends BasicUnit {
 	
 	/**
 	 * Breite
 	 */
-	protected int width;
+//	protected int width;
 	
 	/**
 	 * Höhe
 	 */
-	protected int height;
+//	protected int height;
 	
 	/**
 	 * Reichweite der Kanone
@@ -47,9 +37,8 @@ abstract public class BasicCannon implements Drawable {
 	 * @param x
 	 * @param y
 	 */
-	public BasicCannon(int x, int y) {
-		setX(x);
-		setY(y);
+	public BasicCannon(UnitOwner p, int x, int y) {
+		super(p, x, y);
 	}
 	
 	/**
@@ -64,12 +53,12 @@ abstract public class BasicCannon implements Drawable {
 	 * @param width
 	 * @param height
 	 */
-	protected BasicCannon(int x, int y, int width, int height) {
-		this(x, y);
-		
-		setWidth(width);
-		setHeight(height);
-	}
+//	protected BasicCannon(UnitOwner p, int x, int y, int width, int height) {
+//		this(p, x, y);
+//		
+//		setWidth(width);
+//		setHeight(height);
+//	}
 	
 	/**
 	 * Setzt X- und Y-Koordinaten, Breite und Höhe und die
@@ -85,21 +74,12 @@ abstract public class BasicCannon implements Drawable {
 	 * @param fireRange
 	 * @param viewRange
 	 */
-	protected BasicCannon(int x, int y, int width, int height, int fireRange, int viewRange) {
-		this(x, y, width, height);
-		
-		setFireRange(new Circle(getCenterX(), getCenterY(), fireRange));
-		setViewRange(new Circle(getCenterX(), getCenterY(), viewRange));
-	}
-	
-	/**
-	 * Zeichnet die Kanone, jede Kindkanone stellt sich selber dar,
-	 * deshalb ist dieses Methode abstrakt
-	 * 
-	 * @param g Graphics
-	 * @throws SlickException
-	 */
-	abstract public void draw(Graphics g) throws SlickException;
+//	protected BasicCannon(int x, int y, int width, int height, int fireRange, int viewRange) {
+//		this(x, y, width, height);
+//		
+//		setFireRange(new Circle(getCenterX(), getCenterY(), fireRange));
+//		setViewRange(new Circle(getCenterX(), getCenterY(), viewRange));
+//	}
 	
 	/**
 	 * Schiesst eine Kugel auf ein bestimmtes Ziel
@@ -108,55 +88,39 @@ abstract public class BasicCannon implements Drawable {
 	 * @param tY Y-Koordinate von Target
 	 * @return Eine abgefeuerte Kugel
 	 */
-	abstract public BasicBullet fire(int tX, int tY);
+	abstract public BasicShot fire(int tX, int tY);
 	
-	public boolean canFire(BasicTarget t) {
-		return getFireRange().contains(t.getCenterX(), t.getCenterY());
-	}
-	
-	public boolean canView(BasicTarget t) {
-		return getViewRange().contains(t.getCenterX(), t.getCenterY());
-	}
-	
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getCenterX() {
-		return x + (width / 2);
-	}
-	
-	public int getCenterY() {
-		return y + (height / 2);
-	}
+//	public boolean canFire(BasicUnit t) {
+//		return getFireRange().contains(t.getCenterX(), t.getCenterY());
+//	}
+//	
+//	public boolean canView(BasicUnit t) {
+//		return getViewRange().contains(t.getCenterX(), t.getCenterY());
+//	}
+//	
+//	public int getWidth() {
+//		return width;
+//	}
+//
+//	public void setWidth(int width) {
+//		this.width = width;
+//	}
+//
+//	public int getHeight() {
+//		return height;
+//	}
+//
+//	public void setHeight(int height) {
+//		this.height = height;
+//	}
+//
+//	public int getCenterX() {
+//		return x + (width / 2);
+//	}
+//	
+//	public int getCenterY() {
+//		return y + (height / 2);
+//	}
 
 	
 	public Circle getFireRange() {

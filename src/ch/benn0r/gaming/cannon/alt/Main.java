@@ -1,4 +1,4 @@
-package ch.benn0r.gaming.cannon;
+package ch.benn0r.gaming.cannon.alt;
 
 import java.util.ArrayList;
 import java.util.Iterator;

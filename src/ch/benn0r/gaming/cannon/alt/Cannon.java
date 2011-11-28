@@ -1,4 +1,4 @@
-package ch.benn0r.gaming.cannon;
+package ch.benn0r.gaming.cannon.alt;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -6,6 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
+
 
 public class Cannon {
 	
@@ -50,7 +51,7 @@ public class Cannon {
 			
 			// negative Zahlen umkehren
 			degrees = degrees < 0 ? degrees * -1 : degrees;
-			int diff = degrees > rotation ? degrees - rotation : rotation - degrees;
+//			int diff = degrees > rotation ? degrees - rotation : rotation - degrees;
 					
 			if (deltaX <= 0 && deltaY <= 0) {
 				// oben links
@@ -68,24 +69,18 @@ public class Cannon {
 				speed = 3;
 			}
 			
-			/*if (degrees > 180) {
-				rotate(rotation - speed);
-			} else*/ if (degrees > rotation) {
+			if (degrees > rotation) {
+				// Im Uhrzeigersinn weiterdrehen
 				rotate(rotation + speed);
 			} else if (degrees < rotation) {
+				// Gegen den Uhrzeigersinn weiterdrehen
 				rotate(rotation - speed);
 			}
 			
 			return degrees;
 		}
-		
-		/*if (getRotation() > 0) {
-			if (getRotation() - 3 < 0) {
-				rotate(0);
-			} else {
-				rotate(getRotation() - 3);
-			}
-		}*/
+
+		// Ziel zu weit entfernt, keine Drehung
 		return 0;
 	}
 	
