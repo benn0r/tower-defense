@@ -46,7 +46,7 @@ public class Bullet {
 	}
 	
 	public void play() {
-		sound.play();
+//		sound.play();
 	}
 	
 	public boolean isAlive() {
