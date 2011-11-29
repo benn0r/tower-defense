@@ -3,6 +3,7 @@ package ch.benn0r.gaming.cannon.test;
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.AppletGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -50,14 +51,14 @@ public class LaserCannonTest extends BasicGame {
 	 * @throws SlickException 
 	 */
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer game = new AppGameContainer(new LaserCannonTest("LaserCannon Test"));
+		/*AppletGameContainer game = new AppletGameContainer();
 		
 		game.setDisplayMode(600, 600, false);
 		game.setVSync(true);
 		game.setShowFPS(true);
 		game.setTargetFrameRate(60);
 		
-		game.start();
+		game.start();*/
 	}
 
 }
