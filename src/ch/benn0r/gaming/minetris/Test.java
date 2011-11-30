@@ -1,7 +1,5 @@
 package ch.benn0r.gaming.minetris;
 
-public class Main {
-	
-	// Test
+public class Test {
 
 }
