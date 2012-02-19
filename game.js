@@ -69,7 +69,14 @@ window.onload = (function() {
     		var x = Math.round(box.x / 16);
     		var y = Math.round(box.y / 16);
     		
-    		if ((y == 3 && x > 4 && x < 13) || (x == 12 && y > 3 && y < 15)) {
+    		if ((y == 3 && x > 4 && x < 17) || 
+    				(x == 12 && y > 3 && y < 15) ||
+    				(x == 3 && y > 4 && y < 9) ||
+    				(x == 6 && y > 0 && y < 6) ||
+    				(x == 8 && y > 4 && y < 8) ||
+    				(x == 8 && y > 4 && y < 8) ||
+    				(y == 10 && x > 2 && x < 12) ||
+    				(y == 7 && x >= 0 && x < 11)) {
     			box.wall = true;
     		}
     		
@@ -88,8 +95,12 @@ window.onload = (function() {
     var tarp = {x: Math.round(tar.x / 16), y: Math.round(tar.y / 16)};
 	var posp = {x: Math.round(pos.x / 16), y: Math.round(pos.y / 16)};
 	
+	var count = 0;
+	
 	game={};
 	findPath(posp.x, posp.y, tarp.x, tarp.y);
+	
+	console.log(count);
 	
 	var i = game.path.length - 1;
 	setInterval(function() {
@@ -99,10 +110,11 @@ window.onload = (function() {
 			pos.x = wp.x * 16;
 			pos.y = wp.y * 16;
 			
+			Crafty.e("Path").attr({x: pos.x, y: pos.y}).color("#000000");
+			
 			i--;
 		}
 	}, 200);
-	
 	
 	/**
 	 * Source: http://www.tonypa.pri.ee/tbw/tut22.html
@@ -110,9 +122,11 @@ window.onload = (function() {
 	function findPath(startx, starty, targetx, targety){
 	  path={};
 	  path.Unchecked_Neighbours=[];
+	  path.names=[];
 	  path.done = false;
 	  path.name="node_"+starty+"_"+startx;
 	  path[path.name]={x:startx, y:starty, visited:true, parentx:null, parenty:null};
+	  path.names[path.name] = path.Unchecked_Neighbours.length;
 	  path.Unchecked_Neighbours[path.Unchecked_Neighbours.length]=path[path.name];
 	  while(path.Unchecked_Neighbours.length>0) {
 	    var N = path.Unchecked_Neighbours.shift();
@@ -142,9 +156,17 @@ window.onload = (function() {
 	function addNode (ob, x, y){
 	  path.name="node_"+y+"_"+x;
 	  if(map[x] && map[x][y] && !map[x][y].wall) {
+		  count++;
+		  if (x > 16 || y > 16) {
+			  console.log("bisschen gross");
+		  }
+		  
 	    if (!path[path.name] || path[path.name].visited != true) {
-	      path[path.name]={x:x, y:y, visited:false, parentx:ob.x, parenty:ob.y};
-	      path.Unchecked_Neighbours[path.Unchecked_Neighbours.length]=path[path.name];
+	    	if (!path.names[path.name]) {
+		      path[path.name]={x:x, y:y, visited:false, parentx:ob.x, parenty:ob.y};
+		      path.Unchecked_Neighbours[path.Unchecked_Neighbours.length] = path[path.name];
+		      path.names[path.name] = path.Unchecked_Neighbours.length;
+	    	}
 	    }
 	  }
 	}
