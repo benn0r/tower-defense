@@ -72,7 +72,7 @@ window.onload = (function() {
     		if ((y == 3 && x > 4 && x < 17) || 
     				(x == 12 && y > 3 && y < 15) ||
     				(x == 3 && y > 4 && y < 9) ||
-    				(x == 6 && y > 0 && y < 6) ||
+    				(x == 6 && y >= 0 && y < 6) ||
     				(x == 8 && y > 4 && y < 8) ||
     				(x == 8 && y > 4 && y < 8) ||
     				(y == 10 && x > 2 && x < 12) ||
@@ -100,7 +100,10 @@ window.onload = (function() {
 	game={};
 	findPath(posp.x, posp.y, tarp.x, tarp.y);
 	
-	console.log(count);
+	if (!game.path) {
+		var ignorewalls = true;
+		findPath(posp.x, posp.y, tarp.x, tarp.y);
+	}
 	
 	var i = game.path.length - 1;
 	setInterval(function() {
@@ -155,7 +158,7 @@ window.onload = (function() {
 	 */
 	function addNode (ob, x, y){
 	  path.name="node_"+y+"_"+x;
-	  if(map[x] && map[x][y] && !map[x][y].wall) {
+	  if(map[x] && map[x][y] && (!map[x][y].wall || ignorewalls)) {
 		  count++;
 		  if (x > 16 || y > 16) {
 			  console.log("bisschen gross");
