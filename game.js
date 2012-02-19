@@ -76,6 +76,9 @@ window.onload = (function() {
     				(x == 8 && y > 4 && y < 8) ||
     				(x == 8 && y > 4 && y < 8) ||
     				(y == 10 && x > 2 && x < 12) ||
+    				(x == 5 && y > 10 && y < 15) ||
+    				(y == 12 && x > 6 && x < 12) ||
+    				(y == 14 && x > 5 && x < 11) ||
     				(y == 7 && x >= 0 && x < 11)) {
     			box.wall = true;
     		}
@@ -117,7 +120,7 @@ window.onload = (function() {
 			
 			i--;
 		}
-	}, 200);
+	}, 10);
 	
 	/**
 	 * Source: http://www.tonypa.pri.ee/tbw/tut22.html
