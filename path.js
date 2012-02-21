@@ -97,8 +97,6 @@ function pathfinder() {
 			}
 		}
 		
-		console.log(_data);
-		
 		return false;
 	};
 	

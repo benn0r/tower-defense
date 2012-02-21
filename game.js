@@ -2,7 +2,7 @@ window.onload = (function() {
     var WIDTH = 256;
     var HEIGHT = 256;
     
-    var TARGET = {x: 9, y: 1};
+    var TARGET = {x: 8, y: 11};
     var START = {x: 10, y: 11};
     
     var map = new Array();
@@ -32,7 +32,7 @@ window.onload = (function() {
             ctx.fillStyle = "#1064C2";
     	},
     	init: function() {
-    		this.addComponent("2D, Canvas, Color, Tween");
+    		this.addComponent("2D, Canvas, Color, Tween, Mouse");
     		
     		this.w = 16;
     		this.h = 16;
@@ -40,10 +40,26 @@ window.onload = (function() {
     		this.bind("Draw", function(obj) {
                 this._draw(obj.ctx, obj.pos);
             });
+    		
+    		this.bind("Click", function(e) {
+    			if (pos.path.length == 0) {
+	    			finder.reset();
+	    			
+	    			var last = {x: Math.round(pos.x / 16), y: Math.round(pos.y / 16)};
+	    			
+	    			finder.find({x: last.x, y: last.y}, {x: Math.round(this.x / 16), y: Math.round(this.y / 16)});
+	    			var bla = finder.getPath();
+	    			
+	    			pos.path = bla;
+    			}
+            });
     	}
     });
     
     Crafty.c("Path", {
+    	path: [],
+    	_wp: null,
+    	
     	_draw: function(ctx, po) {
     		var pos = {_x: po._x + 1, _y: po._y + 1, _w: po._w - 2, _h: po._h -2};
     		
@@ -59,6 +75,30 @@ window.onload = (function() {
     		this.bind("Draw", function(obj) {
                 this._draw(obj.ctx, obj.pos);
             });
+    		
+    		this.bind("EnterFrame", function() {
+    			
+    			if (this.path.length > 0 && this._wp == null) {
+    				this._wp = this.path.pop();
+    				
+    				this._wp.x = this._wp.x * 16;
+    				this._wp.y = this._wp.y * 16;
+    			}
+    			
+    			var x = this.x;
+    			var y = this.y;
+    			
+    			if (this._wp && (this._wp.x != x || this._wp.y != y)) {
+    				if (this._wp.x != x) {
+    					this.x = (this._wp.x < x) ? this.x - 8 : this.x + 8;
+    				} 
+    				if (this._wp.y != y) {
+    					this.y = (this._wp.y < y) ? this.y - 8 : this.y + 8;
+    				}
+    			} else {
+    				this._wp = null;
+    			}
+    		});
     	}
     });
     
@@ -106,19 +146,6 @@ window.onload = (function() {
 	
 	finder.find({x: posp.x, y: posp.y}, {x: tarp.x, y: tarp.y});
 	var path = finder.getPath();
-	
-	var i = path.length - 1;
-	setInterval(function() {
-		if (i >= 0) {
-			var wp = path[i];
-			
-			pos.x = wp.x * 16;
-			pos.y = wp.y * 16;
-			
-			Crafty.e("Path").attr({x: pos.x, y: pos.y}).color("#000000");
-			
-			i--;
-		}
-	}, 200);
+	pos.path = path;
     
 });
