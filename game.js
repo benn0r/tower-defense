@@ -95,20 +95,22 @@ window.onload = (function() {
     var tarp = {x: Math.round(tar.x / 16), y: Math.round(tar.y / 16)};
 	var posp = {x: Math.round(pos.x / 16), y: Math.round(pos.y / 16)};
 	
-	var count = 0;
+	var finder = new pathfinder();
+	finder.callback(function(x, y) {
+		if(map[x] && map[x][y] && !map[x][y].wall) {
+			return true;
+		}
+		
+		return false;
+	});
 	
-	game={};
-	findPath(posp.x, posp.y, tarp.x, tarp.y);
+	finder.find({x: posp.x, y: posp.y}, {x: tarp.x, y: tarp.y});
+	var path = finder.getPath();
 	
-	if (!game.path) {
-		var ignorewalls = true;
-		findPath(posp.x, posp.y, tarp.x, tarp.y);
-	}
-	
-	var i = game.path.length - 1;
+	var i = path.length - 1;
 	setInterval(function() {
 		if (i >= 0) {
-			var wp = game.path[i];
+			var wp = path[i];
 			
 			pos.x = wp.x * 16;
 			pos.y = wp.y * 16;

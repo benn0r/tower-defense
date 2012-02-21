@@ -1,27 +1,67 @@
-function path() {
+/**
+ * Pathfinder - Finds a path in a tiled world
+ * 
+ * Sample usage:
+ * 	 var finder = new pathfinder();
+ * 	 if (finder.find({x: 1, y: 4}, {x: 11, y: 13})) {
+ * 	   console.log(finder.getPath());
+ *   }
+ *   
+ * This pathfinder works as the code from http://www.tonypa.pri.ee/tbw/tut22.html
+ * but is redesigned by me.
+ * 
+ * @copyright Copyright (c) 2012, benn0r <benjamin@benn0r.ch>
+ * @version benn0r <benjamin@benn0r.ch>
+ */
+function pathfinder() {
 	
 	var _data = {
 		unchecked: [], // unchecked tiles
-		names: {},
-		done: false,
+		names: {}, // names of elements in unchecked
 		path: {},
-		result: []
+		result: [] // generated path to target
 	};
 	
+	/**
+	 * callback function for elements
+	 * 
+	 * @var function
+	 */
 	var _callback = null;
 	
+	/**
+	 * set callback function for checking elements
+	 * for beeing a walkable element
+	 * 
+	 * @param function
+	 */
 	this.callback = function(callback) {
 		_callback = callback;
-	}
+	};
 	
 	this._buildName = function(x, y) {
 		return "node_" + x + "_" + y; // name in tiles array
 	};
 	
-	this._nextId = function() {
-		return _data.unchecked.length;
+	/**
+	 * reset data in object
+	 */
+	this.reset = function() {
+		_data = {
+			unchecked: [],
+			names: {},
+			path: {},
+			result: []
+		};
 	};
 	
+	/**
+	 * finds a path from start to target
+	 * 
+	 * @param object start {x: 1, y: 1}
+	 * @param object target {x: 2, y: 2}
+	 * @return boolean
+	 */
 	this.find = function(start, target) {
 		var starter = {
 				x: start.x, 
@@ -31,7 +71,7 @@ function path() {
 				parenty: null
 		};
 		
-		var id = this._nextId(); // next free slot in stack
+		var id = _data.unchecked.length; // next free slot in stack
 		var name = this._buildName(starter.x, starter.y);
 		
 		// add startpoint to stack
@@ -40,7 +80,6 @@ function path() {
 		_data.names[name] = id;
 		
 		while (_data.unchecked.length > 0) {
-//		for (var i = 0; i < 100000; i++) {
 			var tile = _data.unchecked.shift();
 			
 			if (tile.x == target.x && tile.y == target.y) {
@@ -63,21 +102,28 @@ function path() {
 		return false;
 	};
 	
+	/**
+	 * adds a tile to stack
+	 * 
+	 * @param object parent parent tile
+	 * @param int x
+	 * @param int y
+	 */
 	this._addNode = function(parent, x, y) {
 		var id = this._buildName(x, y);
 		
 		// only add nodes we never added before
-		if (_callback && _callback(x, y) && !_data.names[id] &&
+		if (((_callback && _callback(x, y)) || !_callback) && !_data.names[id] &&
 				(!_data.path[id] || _data.path[id].visited != true)) {
 			var tile = {
 					x: x, 
 					y: y, 
 					visited: false, 
-					parentx: parent.x, 
+					parentx: parent.x,
 					parenty: parent.y
 			};
 			
-			var slot = this._nextId();
+			var slot = _data.unchecked.length;
 			
 			// add tile to stack
 			_data.path[id] = tile;
@@ -86,6 +132,11 @@ function path() {
 		}
 	};
 	
+	/**
+	 * builds the path after target was found
+	 * 
+	 * @return array
+	 */
 	this._makePath = function(tile) {
 		var result = [];
 		
@@ -103,16 +154,15 @@ function path() {
 	
 }
 
-var pathObj = new path();
-pathObj.callback(function(x, y) {
-	if (x >= 0 && x < 16 && y >= 0 && y < 16) {
-		return true;
-	}
-	
-	return false;
-});
-
-//pathObj.find({x: 1, y: 4}, {x: 11, y: 10});
-pathObj.find({x: 1, y: 4}, {x: 11, y: 13});
-
-console.log(pathObj.getPath());
+//var pathObj = new path();
+//pathObj.callback(function(x, y) {
+//	if (x >= 0 && x < 16 && y >= 0 && y < 16) {
+//		return true;
+//	}
+//	
+//	return false;
+//});
+//
+//pathObj.find({x: 1, y: 4}, {x: 11, y: 13});
+//
+//console.log(pathObj.getPath());
